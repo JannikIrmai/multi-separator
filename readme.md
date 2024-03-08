@@ -49,4 +49,7 @@ The data for reproducing the neuron segmentation experiments can be downloaded f
 This data includes the membrane estimates and affinities that are computed by a CNN.
 The implementation of this CNN is publicly available [here](https://github.com/markschoene/MeLeCoLe).
 
+If you use any of this data in your work, please cite [Kasthure et al. (2015)](https://www.sciencedirect.com/science/article/pii/S0092867415008247) and [Lee et al. (2021)](https://ieeexplore.ieee.org/document/9489304).
+
+
 To run the experiments execute `python connectomics_experiments.py`
