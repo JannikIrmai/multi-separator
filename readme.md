@@ -49,4 +49,8 @@ with either `img_type=filament` or `img_type=cell`.
 
 
 ### Connectomics
-TODO
+The data for reproducing the neuron segmentation experiments can be downloaded from [here](https://datashare.tu-dresden.de/s/c6aYDLaP7bP8Dbp).
+This data includes the membrane estimates and affinities that are computed by a CNN.
+The implementation of this CNN is publicly available [here](https://github.com/markschoene/MeLeCoLe).
+
+To run the experiments execute `python connectomics_experiments.py`

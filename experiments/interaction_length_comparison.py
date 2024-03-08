@@ -147,7 +147,7 @@ def aggregate_results(img_type, metric):
     for i, r in enumerate(radii):
         for j, seed in enumerate(range(1, num_seeds+1)):
             try:
-                 values[i, j] = file["multi_separator"][f"seed_{seed}"][f"radius_{r}"][metric][:]
+                values[i, j] = file["multi_separator"][f"seed_{seed}"][f"radius_{r}"][metric][:]
             except KeyError:
                 pass
     file.close()

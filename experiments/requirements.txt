@@ -34,5 +34,6 @@ tifffile==2023.4.12
 urllib3==2.0.3
 vtk==9.2.6
 zipp==3.15.0
+connected-components-3d==3.12.4
 ./../partition-comparison
 ./../multi-separator-algorithms
