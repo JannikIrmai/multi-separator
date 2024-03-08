@@ -5,11 +5,7 @@ It also contains the source code to reproduce the experiments that are conducted
 
 ## Installation
 
-The multi-separator algorithms can be installed as a python package with
-```
-pip install pip@git+https://github.com/JannikIrmai/multi-separator/multi-separator-algorithms
-```
-or by executing
+The multi-separator algorithms can be installed as a python package by executing
 ```
 pip install multi-separator-algorithms/
 ```
