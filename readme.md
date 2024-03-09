@@ -52,4 +52,6 @@ The implementation of this CNN is publicly available [here](https://github.com/m
 If you use any of this data in your work, please cite [Kasthure et al. (2015)](https://www.sciencedirect.com/science/article/pii/S0092867415008247) and [Lee et al. (2021)](https://ieeexplore.ieee.org/document/9489304).
 
 
-To run the experiments execute `python connectomics_experiments.py`
+To run the experiments, create a directeory `results/connectomics` for storing the results and then execute `python connectomics_experiments.py`.
+
+

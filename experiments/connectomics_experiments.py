@@ -188,8 +188,10 @@ def compute_segmentations(method):
         t = time()
         if method == "multicut":
             segmentation = mc_mutex(membranes, affinities, offsets, bias=bias)
-        elif method == "multi-separator":
+        elif method == "multi_separator":
             segmentation = ms_mutex(membranes, affinities, offsets, bias=bias)
+        else:
+            raise ValueError("Invalid method")
         print("Time:", time() - t)
 
         file = h5py.File(result_file_name, 'w-')
@@ -197,7 +199,7 @@ def compute_segmentations(method):
         file.close()
 
 
-def evaluate(method="chunk_wise"):
+def evaluate(method):
 
     # load ground truth
     file = h5py.File(connectomics_data_filename, "r")
@@ -206,7 +208,7 @@ def evaluate(method="chunk_wise"):
 
     vois = []
 
-    for bias in biases:
+    for bias in biases[method]:
         filename = f"results/connectomics/{method}_{str(bias).replace('.', '')}.h5"
         # load results
         file = h5py.File(filename)
@@ -249,11 +251,10 @@ def plot_results():
 
 def main():
     compute_segmentations("multicut")
-    compute_segmentations("multi_separator")
-    compute_chunk_wise_segmentations()
-
     evaluate("multicut")
+    compute_segmentations("multi_separator")
     evaluate("multi_separator")
+    compute_chunk_wise_segmentations()
     evaluate("chunk_wise")
 
     plot_results()
