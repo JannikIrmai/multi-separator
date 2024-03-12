@@ -1,4 +1,5 @@
 experiments/.idea
+.idea
 experiments/venv
 *.egg-info
 multi-separator-algorithms/build

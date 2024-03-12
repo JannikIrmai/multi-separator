@@ -90,7 +90,7 @@ def mc_mutex(membranes: np.ndarray, affinities: np.ndarray, offsets: np.ndarray,
     return segmentation
 
 
-def chunk_wise_ms(membranes, affinities, offsets, chunk_size, step_size, padding, bias_cut):
+def chunk_wise_ms(membranes, affinities, offsets, chunk_size, step_size, padding, bias):
     shape = membranes.shape
 
     assert all(2*padding[i] < shape[i] for i in range(len(shape)))
@@ -115,7 +115,7 @@ def chunk_wise_ms(membranes, affinities, offsets, chunk_size, step_size, padding
         print("\rProcessing chunk", i+1, "/", len(slicers), end="")
         chunk_membranes = membranes[pad_slicers[i]]
         chunk_affinities = affinities[(slice(None),) + pad_slicers[i]]
-        chunk_vertex_labels = ms_mutex(chunk_membranes, chunk_affinities, offsets, bias_cut=bias_cut)
+        chunk_vertex_labels = ms_mutex(chunk_membranes, chunk_affinities, offsets, bias=bias)
 
         padding_slicer = tuple(slice(padding[k], chunk_vertex_labels.shape[k] - padding[k]) for k in range(len(shape)))
         separator[slicers[i]] += chunk_vertex_labels[padding_slicer] == 0
@@ -132,14 +132,9 @@ def compute_chunk_wise_segmentations():
 
     file = h5py.File(connectomics_data_filename, "r")
     offsets = file["offsets"][:]
-    padding = file["padding"][:]
-    cost_shape = file['membranes'].shape
 
-    cost_slicer = tuple(slice(padding[i] - ms_padding[i], cost_shape[i] - padding[i] + ms_padding[i])
-                        for i in range(3))
-
-    membranes = file["membranes"][cost_slicer]
-    affinities = file["affinities"][(slice(None),) + cost_slicer]
+    membranes = file["membranes_pad"][:]
+    affinities = file["affinities_pad"][:]
     file.close()
 
     for bias in biases["chunk_wise"]:
@@ -152,7 +147,7 @@ def compute_chunk_wise_segmentations():
 
         t = time()
         separator = chunk_wise_ms(membranes, affinities, offsets, chunk_size, step_size,
-                                  padding=ms_padding, bias_cut=bias)
+                                  padding=ms_padding, bias=bias)
         print("Time:", time() - t)
 
         shape = separator.shape
@@ -170,12 +165,8 @@ def compute_segmentations(method):
 
     file = h5py.File(connectomics_data_filename, "r")
     offsets = file["offsets"][:]
-    padding = file["padding"][:]
-    cost_shape = file['membranes'].shape
-    cost_slicer = tuple(slice(padding[i], cost_shape[i] - padding[i])
-                        for i in range(3))
-    membranes = file["membranes"][cost_slicer]
-    affinities = file["affinities"][(slice(None),) + cost_slicer]
+    membranes = file["membranes"][:]
+    affinities = file["affinities"][:]
     file.close()
 
     for bias in biases[method]:
@@ -216,7 +207,7 @@ def evaluate(method):
         file.close()
 
         # compute VoI
-        voi = VariationOfInformation(segmentation, labels, True)
+        voi = VariationOfInformation(labels, segmentation, True)
         fj, fc = voi.valueFalseJoin(), voi.valueFalseCut()
         vois.append((fj, fc))
         print(f"{method}, bias={bias}, VI={fj+fc:.3f}, FC={fc:.3f}, FJ={fj:.3f}")
@@ -224,7 +215,7 @@ def evaluate(method):
     vois = np.array(vois)
 
     with open(f"results/connectomics/{method}_voi.pickle", "wb") as f:
-        pickle.dump({"biases": biases, "vois": vois}, f)
+        pickle.dump({"biases": biases[method], "vois": vois}, f)
 
 
 def plot_results():
@@ -236,9 +227,9 @@ def plot_results():
         with open(f"results/connectomics/{method}_voi.pickle", "rb") as f:
             results = pickle.load(f)
 
-        ax[i].plot(-results["biases"], results["vois"][:, 0], label="FJ", color=YELLOW)
-        ax[i].plot(-results["biases"], results["vois"][:, 1], label="FC", color=GREEN)
-        ax[i].plot(-results["biases"], results["vois"].sum(axis=1), label="VI", color=RED)
+        ax[i].plot(results["biases"], results["vois"][:, 0], label="FJ", color=YELLOW)
+        ax[i].plot(results["biases"], results["vois"][:, 1], label="FC", color=GREEN)
+        ax[i].plot(results["biases"], results["vois"].sum(axis=1), label="VI", color=RED)
         ax[i].set_xlabel(r"$b$")
         if i == 0:
             ax[i].legend()
