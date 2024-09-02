@@ -1,6 +1,6 @@
 # Multi-separator
 
-This repository contains implementations of local-search algorithms for the multi-separator problem that were presented in [this](https://arxiv.org/abs/2307.04592) article.
+This repository contains implementations of local-search algorithms for the multi-separator problem that were presented in [1].
 It also contains the source code to reproduce the experiments that are conducted in that paper.
 
 ## Installation
@@ -54,4 +54,7 @@ If you use any of this data in your work, please cite [Kasthure et al. (2015)](h
 
 To run the experiments, create a directeory `results/connectomics` for storing the results and then execute `python connectomics_experiments.py`.
 
+## References
+
+[1] Irmai, J., Zhao, S., Schöne, M. et al. A Graph Multi-separator Problem for Image Segmentation. J Math Imaging Vis (2024). [https://doi.org/10.1007/s10851-024-01201-1](https://link.springer.com/article/10.1007/s10851-024-01201-1)
 
