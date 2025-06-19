@@ -3,7 +3,7 @@
 This repository contains implementations of local-search algorithms for the multi-separator problem that were presented in [1].
 It also contains the source code to reproduce the experiments that are conducted in that paper.
 
-### Greedy Component Growing
+### Greedy Separator Growing
 ![GSG-DEMO](gsg-animation.gif)
 ### Greedy Separator Shrinking
 ![GSS-DEMO](gss-animation.gif)
