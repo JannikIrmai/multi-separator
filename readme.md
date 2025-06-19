@@ -3,6 +3,12 @@
 This repository contains implementations of local-search algorithms for the multi-separator problem that were presented in [1].
 It also contains the source code to reproduce the experiments that are conducted in that paper.
 
+### Greedy Component Growing
+![GSG-DEMO](gsg-animation.gif)
+### Greedy Separator Shrinking
+![GSS-DEMO](gss-animation.gif)
+
+
 ## Installation
 
 The multi-separator algorithms can be installed as a python package by executing
@@ -18,7 +24,7 @@ To reproduce the experiments from Section 5 of the article, proceed as follows:
 
 0. Navigate to the `experiments` directory.
 1. run `pip install -r requirements.txt` to install all required packages.
-This will, in particular, install the custom packages `multi-separator-algorithms` and `partition-comparision` that are included in this supplementary material.
+This will, in particular, install the custom packages `multi-separator-algorithms` and `partition-comparison` that are included in this repository.
 2. run `mkdir results` to create a directory where the results can be saved. 
 3. for a given type of image (either `img_type=filament` or `img_type=cell`) run `python experiments.py img_type`.
 This will: 
